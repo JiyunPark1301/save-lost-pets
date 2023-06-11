@@ -1,42 +1,70 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import "./login.css";
 import axios from "axios";
 
-const BlockInp = styled.input`
-  display: block;
-  margin-bottom: 10px;
-`;
-
 export const Login = () => {
-  const [email, setEmail] = useState([]);
-  const [password, setPassword] = useState([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    axios
-      .post("https://api.mandarin.weniv.co.kr/user/login")
-      .then((response) => {
-        console.log(response);
-        setEmail(response.email);
-      });
-  }, []);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    const regex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (regex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    const regex =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+    if (regex.test(password)) {
+      setPasswordValid(true);
+    } else {
+      setPasswordValid(false);
+    }
+  };
 
   return (
-    <form className="loginContainer">
-      <h1>로그인</h1>
-      <label htmlFor="userEmail">이메일</label>
-      <BlockInp type="email" id="userEmail" />
-      <label htmlFor="userPassword">비밀번호</label>
-      <BlockInp type="password" id="userPassword" />
-      <button type="submit">로그인</button>
-      <p>이메일로 회원가입</p>
-    </form>
+    <section className="loginCard">
+      <form className="loginContainer">
+        <h1>로그인</h1>
+        <label htmlFor="userEmail">이메일</label>
+        <input
+          type="email"
+          id="userEmail"
+          value={email}
+          onChange={handleEmail}
+        />
+        <div className="errorWrap">
+          {!emailValid && email.length > 0 && (
+            <p className="errorTxt">올바른 이메일을 입력해 주세요.</p>
+          )}
+        </div>
+        <label htmlFor="userPassword">비밀번호</label>
+        <input
+          type="password"
+          placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+          id="userPassword"
+          value={password}
+          onChange={handlePassword}
+        />
+        <div className="errorWarp">
+          {!passwordValid && password.length > 0 && (
+            <p className="errorTxt">비밀번호가 일치하지 않습니다.</p>
+          )}
+        </div>
+        <button disabled={true} className="loginBtn">
+          로그인
+        </button>
+        <a className="signIn">이메일로 회원가입</a>
+      </form>
+    </section>
   );
 };
-
-// const handleEmailChange = (e) => {
-//   setEmail(e.target.value);
-// };
-
-// const handlePasswordChange = (e) => {
-//   setPassword(e.target.value);
-// };
