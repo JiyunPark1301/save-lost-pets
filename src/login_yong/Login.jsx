@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Login.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -35,7 +37,6 @@ function Login() {
       setPwValid(false);
     }
   };
-
   useEffect(() => {
     if (emailValid && pwValid) {
       setNotAllow(false);
@@ -51,26 +52,47 @@ function Login() {
     }
   };
 
+  // const onClickConfirmButton = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch(
+  //       "https://api.mandarin.weniv.co.kr/user/login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json"
+  //         },
+  //         body: JSON.stringify(req)
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     console.log("성공했다:", data);
+
+  //     localStorage.setItem("access-token", JSON.stringify(data));
+  //   } catch (error) {
+  //     console.error("실패했다:", error);
+  //   }
+  // };
+
   const onClickConfirmButton = async (e) => {
+    // const navigate = useNavigate();
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://api.mandarin.weniv.co.kr/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(req)
-        }
-      );
-      const data = await response.json();
-      console.log("성공했다:", data.user.token);
+      await axios
+        .post("https://api.mandarin.weniv.co.kr/user/login", req)
+        .then((response) => {
+          console.log(response);
+          const user = response.data.user;
+          localStorage.setItem("user-info", JSON.stringify(user)); //스토리지에 넣을땐 stringify
+          console.log("성공, 토큰:", user.token);
+          let temp = localStorage.getItem("user-info");
+          console.log(JSON.parse(temp)); //스토리지 안에서 다시 꺼낼땐 parse. 안하면 문자열 나열로 출력됨. js객체 형식으로 변환해야함.
+          // navigate("/");
+        });
     } catch (error) {
       console.error("실패했다:", error);
     }
   };
-
   return (
     <section className="loginCard">
       <form className="loginContainer" onSubmit={onClickConfirmButton}>
