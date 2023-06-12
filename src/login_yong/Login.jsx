@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import "./Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -51,7 +51,8 @@ function Login() {
     }
   };
 
-  const onClickConfirmButton = async () => {
+  const onClickConfirmButton = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(
         "https://api.mandarin.weniv.co.kr/user/login",
@@ -63,8 +64,8 @@ function Login() {
           body: JSON.stringify(req)
         }
       );
-      const result = await response.json();
-      console.log("성공했다:", result);
+      const data = await response.json();
+      console.log("성공했다:", data.user.token);
     } catch (error) {
       console.error("실패했다:", error);
     }
