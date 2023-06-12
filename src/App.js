@@ -2,7 +2,7 @@ import { RecoilRoot } from "recoil";
 import GlobalStyle from "./styles/GlobalStyle";
 import styled, { ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
-
+import Login from "./login_yong/Login";
 const Span1 = styled.span`
   font-weight: 200;
   color: ${({ theme }) => theme.colors.primary};
@@ -19,10 +19,7 @@ function App() {
     <RecoilRoot>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        hello world! I love weniv feature
-        <Span1>안녕</Span1>
-        <Span2>안녕</Span2>
-        <Span3>안녕</Span3>
+        <Login />
       </ThemeProvider>
     </RecoilRoot>
   );
