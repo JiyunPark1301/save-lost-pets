@@ -1,23 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
+import './font.css';
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
 
   * {
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
   } 
 
-
-  .container {
-    position: relative;
-    max-width: 390px;
-    height: 80%;
-    min-height: 80vh;
-    margin: 40px auto;
-    border: 1px solid #dbdbdb;
-    box-shadow: 0px 0px 5px #dbdbdb;
+  body {
+    font-family: "Pretendard-Regular, sans-serif";
   }
 
   .wrapper {

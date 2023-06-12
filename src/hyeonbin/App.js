@@ -1,6 +1,6 @@
 import React from 'react';
-import GlobalStyle from './components/common/GlobalStyle';
 import RegisterPage from './pages/RegisterPage';
+import GlobalStyle from './styles/GlobalStyle';
 
 const App = () => {
   return (
