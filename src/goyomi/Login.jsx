@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
-// import axios from "axios";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +8,33 @@ export const Login = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
+
+  const req = {
+    user: {
+      email: email,
+      password: password,
+    },
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        "https://api.mandarin.weniv.co.kr/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req),
+        }
+      );
+
+      const result = await response.json();
+      console.log("성공:", result);
+    } catch (error) {
+      console.error("실패:", error);
+    }
+  };
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -23,22 +49,13 @@ export const Login = () => {
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    const regex =
-      /^(?=.*[!@#$%^&*()_+=-])(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,20}$/;
+    const regex = /^.{6,}$/;
     if (regex.test(password)) {
       setPasswordValid(true);
     } else {
       setPasswordValid(false);
     }
   };
-
-  // const onclickConfirmBtn = (e) => {
-  //   if (email === User.email && password === User.password) {
-  //     alert("로그인에 성공했습니다!");
-  //   } else {
-  //     ("등록되지 않은 회원입니다!");
-  //   }
-  // };
 
   useEffect(() => {
     if (emailValid && passwordValid) {
@@ -50,7 +67,7 @@ export const Login = () => {
 
   return (
     <section className="loginCard">
-      <form className="loginContainer">
+      <form className="loginContainer" onSubmit={handleSubmit}>
         <h1>로그인</h1>
         <label htmlFor="userEmail">이메일</label>
         <input
@@ -77,11 +94,7 @@ export const Login = () => {
             <p className="errorTxt">비밀번호가 일치하지 않습니다.</p>
           )}
         </div>
-        <button
-          // onClick={onClickConfirmBtn}
-          disabled={notAllow}
-          className="loginBtn"
-        >
+        <button disabled={notAllow} className="loginBtn">
           로그인
         </button>
         <a href="#" className="signIn">
