@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
-import axios from "axios";
+// import axios from "axios";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,11 +8,12 @@ export const Login = () => {
 
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [notAllow, setNotAllow] = useState(true);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
     const regex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/;
     if (regex.test(email)) {
       setEmailValid(true);
     } else {
@@ -23,13 +24,29 @@ export const Login = () => {
   const handlePassword = (e) => {
     setPassword(e.target.value);
     const regex =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+      /^(?=.*[!@#$%^&*()_+=-])(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,20}$/;
     if (regex.test(password)) {
       setPasswordValid(true);
     } else {
       setPasswordValid(false);
     }
   };
+
+  // const onclickConfirmBtn = (e) => {
+  //   if (email === User.email && password === User.password) {
+  //     alert("로그인에 성공했습니다!");
+  //   } else {
+  //     ("등록되지 않은 회원입니다!");
+  //   }
+  // };
+
+  useEffect(() => {
+    if (emailValid && passwordValid) {
+      setNotAllow(false);
+      return;
+    }
+    setNotAllow(true);
+  }, [emailValid, passwordValid]);
 
   return (
     <section className="loginCard">
@@ -50,7 +67,7 @@ export const Login = () => {
         <label htmlFor="userPassword">비밀번호</label>
         <input
           type="password"
-          placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+          placeholder="영문, 숫자, 특수문자 포함 6자 이상"
           id="userPassword"
           value={password}
           onChange={handlePassword}
@@ -60,10 +77,16 @@ export const Login = () => {
             <p className="errorTxt">비밀번호가 일치하지 않습니다.</p>
           )}
         </div>
-        <button disabled={true} className="loginBtn">
+        <button
+          // onClick={onClickConfirmBtn}
+          disabled={notAllow}
+          className="loginBtn"
+        >
           로그인
         </button>
-        <a className="signIn">이메일로 회원가입</a>
+        <a href="#" className="signIn">
+          이메일로 회원가입
+        </a>
       </form>
     </section>
   );
