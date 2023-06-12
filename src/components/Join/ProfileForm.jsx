@@ -78,7 +78,6 @@ const ProfileForm = ({
       );
 
       const data = await response.json();
-      console.log(data);
       setImg(data.filename);
     } catch (error) {
       console.log(error.message);
@@ -88,8 +87,6 @@ const ProfileForm = ({
   let formIsValid = false;
   if (error.username === 'noError' && error.accountname === 'noError')
     formIsValid = true;
-
-  const handleClick = () => {};
 
   return (
     <Section>
@@ -139,11 +136,7 @@ const ProfileForm = ({
           placeholder: '자신과 판매할 상품에 대하여 소개해주세요',
         }}
       />
-      <StartBtn
-        mode={formIsValid ? 'default' : 'disabled'}
-        size="lg"
-        onClick={handleClick}
-      >
+      <StartBtn mode={formIsValid ? 'default' : 'disabled'} size="lg">
         감귤마켓 시작하기
       </StartBtn>
     </Section>
