@@ -16,7 +16,8 @@ export const Login = () => {
     },
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(
         "https://api.mandarin.weniv.co.kr/user/login",
@@ -30,11 +31,17 @@ export const Login = () => {
       );
 
       const result = await response.json();
+      const successLogin = localStorage.setItem(
+        "LoginClear",
+        JSON.stringify(result.user.token)
+      );
       console.log("성공:", result);
     } catch (error) {
       console.error("실패:", error);
     }
   };
+
+  //로그인 성공시, 유저정보(토큰,닉네임 등)가지고 다른페이지로 이동
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
